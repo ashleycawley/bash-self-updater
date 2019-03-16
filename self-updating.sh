@@ -24,19 +24,20 @@ ONLINE_MD5=(`wget -q -O /tmp/testing.md5 $UPDATE_SOURCE; md5sum /tmp/testing.md5
 function MD5_COMPARISON {
     echo "Script's current md5: $MY_MD5"
     echo "Script's online md5 : $ONLINE_MD5"
+    echo
 }
 
 # Script
 
 MD5_COMPARISON
 
-echo && echo "Comparison check:" && echo
+echo -e "Comparison check: \c"
 
 if [ $MY_MD5 != $ONLINE_MD5 ]
 then
-    echo "MD5's are NOT equal!"
+    echo "Local & Remote md5sums are not equal - Version Mismatch!"
     echo
-    echo "Downloading newer version..."
+    echo "Downloading newer version from $UPDATE_SOURCE"
     wget -q -O $FULLSCRIPTPATH $UPDATE_SOURCE
     chmod +x $FULLSCRIPTPATH
     echo
