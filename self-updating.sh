@@ -49,5 +49,5 @@ then
 
     MD5_COMPARISON
 else
-    echo "MD5's are equal :-)"
+    echo "Local & Remote md5sum are equal - This script is up to date."
 fi
