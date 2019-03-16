@@ -45,8 +45,12 @@ then
         wget -q -O $FULLSCRIPTPATH $UPDATE_SOURCE
         chmod +x $FULLSCRIPTPATH
         echo
+        # Clean up temporary 2FA file
+        rm -f /tmp/update-2fa.txt
     else
     echo "Update server has not acknowledged that an updated version has been released - No update will be performed."
+        # Clean up temporary 2FA file
+        rm -f /tmp/update-2fa.txt
     fi
     echo "Performing another md5sum check local vs remote..."
     # Scripts current md5sum hash
