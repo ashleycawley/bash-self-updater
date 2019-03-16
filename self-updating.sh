@@ -37,10 +37,17 @@ if [ $MY_MD5 != $ONLINE_MD5 ]
 then
     echo "Local & Remote md5sums are not equal - Version Mismatch!"
     echo
-    echo "Downloading newer version from $UPDATE_SOURCE"
-    wget -q -O $FULLSCRIPTPATH $UPDATE_SOURCE
-    chmod +x $FULLSCRIPTPATH
-    echo
+
+    if [ `wget -q -O /tmp/update-2fa.txt http://status.ashleycawley.co.uk/update-2fa.txt; cat /tmp/update-2fa.txt` == "UPDATE" ]
+    then
+        echo "Update server acknowledges update cycle."
+        echo "Downloading newer version from $UPDATE_SOURCE"
+        wget -q -O $FULLSCRIPTPATH $UPDATE_SOURCE
+        chmod +x $FULLSCRIPTPATH
+        echo
+    else
+    echo "Update server has not acknowledged that an updated version has been released - No update will be performed."
+    fi
     echo "Performing another md5sum check local vs remote..."
     # Scripts current md5sum hash
     MY_MD5=(`md5sum $FULLSCRIPTPATH`)
