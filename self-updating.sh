@@ -13,6 +13,9 @@ UPDATE_SOURCE="https://raw.githubusercontent.com/ashleycawley/bash-self-updater/
 # URL to check to see if update should proceed
 TWOFA="http://status.ashleycawley.co.uk/update-2fa.txt"
 
+# Location of 2FA Temp file
+TWOFA_TEMP_FILE="/tmp/update-2fa.txt"
+
 # Scripts current md5sum hash
 MY_MD5=(`md5sum $FULLSCRIPTPATH`)
 
@@ -37,7 +40,7 @@ then
     "
     
     # Checks third-party server to see if an update cycle has been acknowledged
-    if [ `wget -q -O /tmp/update-2fa.txt http://status.ashleycawley.co.uk/update-2fa.txt; cat /tmp/update-2fa.txt` == "UPDATE" ]
+    if [ `wget -q -O $TWOFA_TEMP_FILE $TWOFA; cat $TWOFA_TEMP_FILE` == "UPDATE" ]
     then
         echo "Update server acknowledges update cycle."
         echo "Downloading newer version from $UPDATE_SOURCE"
@@ -47,12 +50,12 @@ then
         chmod +x $FULLSCRIPTPATH
 
         # Clean up temporary 2FA file
-        rm -f /tmp/update-2fa.txt
+        rm -f $TWOFA_TEMP_FILE
     else
         echo "Update server has not acknowledged that an updated version has been released - No update will be performed."
         
         # Clean up temporary 2FA file
-        rm -f /tmp/update-2fa.txt
+        rm -f $TWOFA_TEMP_FILE
     fi
 
     echo "Performing another md5sum check local vs remote..."
